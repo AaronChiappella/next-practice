@@ -5,9 +5,11 @@ import '@fortawesome/fontawesome-svg-core/styles.css'; // Importa los estilos de
 import '@/app/lib/fontawesome'; // Configuración personalizada de FontAwesome
 
 //Providers
-import ThemeProvider from "./providers/ThemeProvider";
-import { ThemeContextProvider } from "./context/ThemeContext";
-import  Navbar  from "@/app/ui/Navbar/Navbar";
+import {ThemeProvider} from "./providers/ThemeProvider";
+
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
+import { AppSidebar } from "@/components/app-sidebar"
+import { ModeToggle } from "./ui/ModeToggle/ModeToggle";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -22,16 +24,21 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body >
-        <ThemeContextProvider>
-          <ThemeProvider>
-            <div className="container" >
-            <Navbar/>
-            
-            {children}
-            </div>
-            
-            </ThemeProvider>
-        </ThemeContextProvider>
+      <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+              <SidebarProvider>
+                <AppSidebar />
+                <div className="flex-1">   
+                  {children}
+                </div>
+
+              </SidebarProvider>
+
+          </ThemeProvider>
       </body>
     </html>
   );
