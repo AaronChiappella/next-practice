@@ -1,17 +1,13 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import '@fortawesome/fontawesome-svg-core/styles.css'; // Importa los estilos de FontAwesome
+import '@/app/lib/fontawesome'; // Configuración personalizada de FontAwesome
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-});
+//Providers
+import ThemeProvider from "./providers/ThemeProvider";
+import { ThemeContextProvider } from "./context/ThemeContext";
+import  Navbar  from "@/app/ui/Navbar/Navbar";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -25,10 +21,17 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+      <body >
+        <ThemeContextProvider>
+          <ThemeProvider>
+            <div className="container" >
+            <Navbar/>
+            
+            {children}
+            </div>
+            
+            </ThemeProvider>
+        </ThemeContextProvider>
       </body>
     </html>
   );
