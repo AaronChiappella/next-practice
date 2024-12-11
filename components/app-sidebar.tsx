@@ -49,7 +49,7 @@ const items = [
       },
       {
         title: "Añadir",
-        url: "/users/add",
+        url: "/users/create",
         icon: Plus,
       },
       
@@ -102,7 +102,11 @@ export function AppSidebar() {
                         <SidebarMenuButton className="flex items-center justify-between">
                           <div className="flex items-center">
                             <item.icon />
+
+                            <a href={item.url} className="flex items-center">
                             <span className="ml-2">{item.title}</span>
+                            </a>  
+                          
                           </div>
                         </SidebarMenuButton>
                       </CollapsibleTrigger>

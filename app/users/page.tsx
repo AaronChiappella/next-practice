@@ -1,5 +1,5 @@
 import React from "react";
-import { getUsers, getUsersPages } from "../lib/data";
+import { getUsers, getUsersPages } from "@/app/api/users/users";
 import UserTable from "../ui/customers/table";
 import Pagination from "../ui/customers/pagination";
 import Link from "next/link";
@@ -22,15 +22,8 @@ export default async function page(props: {
   }
 
   return (
-    <div className="w-full">
-      <div className="flex w-full items-center justify-between">
-      </div>
-
-      <UserTable query={query} currentPage={currentPage} />
-    
-      <div className="mt-5 flex w-full justify-center">
-        <Pagination totalPages={totalPages} />
-      </div>
-    </div>
+    <div className="flex flex-1 items-center justify-center">
+          <p className="text-xl font-semibold text-gray-800"> Welcome to users page</p>
+        </div>
   );
 }

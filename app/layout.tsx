@@ -1,15 +1,16 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import '@fortawesome/fontawesome-svg-core/styles.css'; // Importa los estilos de FontAwesome
-import '@/app/lib/fontawesome'; // Configuración personalizada de FontAwesome
+import "@fortawesome/fontawesome-svg-core/styles.css"; // Importa los estilos de FontAwesome
+import "@/app/lib/fontawesome"; // Configuración personalizada de FontAwesome
 
 //Providers
-import {ThemeProvider} from "./providers/ThemeProvider";
+import { ThemeProvider } from "./providers/ThemeProvider";
 
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
-import { AppSidebar } from "@/components/app-sidebar"
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { AppSidebar } from "@/components/app-sidebar";
 import { ModeToggle } from "./ui/ModeToggle/ModeToggle";
+import { EdgeStoreProvider } from "@/lib/edgestore";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -23,22 +24,27 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body >
-      <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-              <SidebarProvider>
-                <AppSidebar />
-                <div className="flex-1">   
-                  {children}
-                </div>
+      <body>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <SidebarProvider>
+            <AppSidebar />
+            <div className="flex-1">
+              <div className="flex justify-between items-center p-4">
+                {/* Trigger del Sidebar (arriba a la izquierda) */}
+                <SidebarTrigger />
 
-              </SidebarProvider>
-
-          </ThemeProvider>
+                {/* Toggle de modo (arriba a la derecha) */}
+                <ModeToggle />
+              </div>
+              <EdgeStoreProvider>{children}</EdgeStoreProvider>
+            </div>
+          </SidebarProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
