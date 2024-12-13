@@ -10,6 +10,7 @@ import { User } from "@/app/lib/definitions";
 export const columns: ColumnDef<User>[] = [
   {
     id: "select",
+
     header: ({ table }) => (
       <Checkbox
         checked={
@@ -31,13 +32,13 @@ export const columns: ColumnDef<User>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "profilePictureTumbnailUrl",
+    accessorKey: "profilePictureThumbnailUrl",
     header: "Profile Picture",
     cell: ({ row }) => (
       <div className="flex items-center">
         <div className="relative w-8 h-8 mr-4">
           <img
-            src={row.original.profilePictureTumbnailUrl}
+            src={row.original.profilePictureThumbnailUrl  }
             alt={row.original.name}
             className="rounded-full"
           />
@@ -57,6 +58,18 @@ export const columns: ColumnDef<User>[] = [
   {
     accessorKey: "surname",
     header: "Surname",
+  },
+  {
+    accessorKey: "phoneNumber",
+    header: "Phone Number",
+  },
+  {
+    accessorKey: "address",
+    header: "Address",
+  },
+  {
+    accessorKey: "createdAt",
+    header: "Created At",
   },
   {
     accessorKey: "role",

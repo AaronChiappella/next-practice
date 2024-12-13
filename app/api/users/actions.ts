@@ -9,6 +9,7 @@ import bcrypt from "bcrypt";
 // Schema to validate form data
 const FormSchema = z
   .object({
+    id: z.number().optional(),
     name: z.string().min(3, {
       message: "Name must be at least 2 characters.",
     }),
@@ -84,6 +85,15 @@ export async function createUser(prevState: State, formData: FormData) {
     };
   }
 
+  if (!formData.get("profilePictureUrl")) {
+    validatedFields.data.profilePictureUrl = "https://files.edgestore.dev/rppbgj9k8114auu9/publicImages/_public/0a5acbd4-fe6a-4f33-b090-e30a30d32f7c.png";
+    
+  }
+
+  if (!formData.get("profilePictureThumbnailUrl")) {
+    validatedFields.data.profilePictureThumbnailUrl = "https://files.edgestore.dev/rppbgj9k8114auu9/publicImages/_public/0a5acbd4-fe6a-4f33-b090-e30a30d32f7c-thumb.png";
+
+  
   const {
     name,
     surname,
@@ -137,12 +147,18 @@ export async function createUser(prevState: State, formData: FormData) {
   }
 }
 
-/*export async function updateUser(prevState: State, formData: FormData) {
+export async function updateUser(prevState: State, formData: FormData) {
     // Parse and validate form data
     const validatedFields = FormSchema.safeParse({
-        id:formData.get("id"),
-        email: formData.get("email"),
-        name: formData.get("name"),
+      id: formData.get("id"),
+         name: formData.get("name"),
+    surname: formData.get("surname"),
+    address: formData.get("address"),
+    email: formData.get("email"),
+    phoneNumber: formData.get("phoneNumber"),
+    role: formData.get("role"),
+ profilePictureUrl: formData.get("profilePictureUrl"),
+    profilePictureThumbnailUrl: formData.get("profilePictureThumbnailUrl"),
     });
 
     // Return validation errors if any
@@ -152,7 +168,27 @@ export async function createUser(prevState: State, formData: FormData) {
             message: "Validation failed",};
         }
 
-    const { id,email, name } = validatedFields.data;
+        if (!formData.get("profilePictureUrl")) {
+          validatedFields.data.profilePictureUrl = "https://files.edgestore.dev/rppbgj9k8114auu9/publicImages/_public/0a5acbd4-fe6a-4f33-b090-e30a30d32f7c.png";
+          
+        }
+  
+        if (!formData.get("profilePictureThumbnailUrl")) {
+          validatedFields.data.profilePictureThumbnailUrl = "https://files.edgestore.dev/rppbgj9k8114auu9/publicImages/_public/0a5acbd4-fe6a-4f33-b090-e30a30d32f7c-thumb.png";
+        }
+  
+    
+  const {
+    id,
+    name,
+    surname,
+    address,
+    email,
+    phoneNumber,
+    role,
+    profilePictureUrl,
+    profilePictureThumbnailUrl,
+  } = validatedFields.data;
 
 
 
@@ -163,8 +199,14 @@ export async function createUser(prevState: State, formData: FormData) {
                 id,
             },
             data: {
-                email,
-                name,
+              name,
+              surname,
+              address,
+              email,
+              phoneNumber,
+              role,
+              profilePictureUrl,
+              profilePictureThumbnailUrl,
             },
         });
 
@@ -187,4 +229,4 @@ export async function deleteUser(id:number) {
     });
     revalidatePath("/users");
     redirect("/users");
-}*/
+}

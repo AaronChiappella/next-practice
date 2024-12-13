@@ -17,8 +17,8 @@ model User {
   surname                  String
   phoneNumber              String?
   address                  String?
-  profilePictureUrl        String?
-  profilePictureThumbnailUrl String?  
+  profilePictureUrl        String
+  profilePictureThumbnailUrl String
   hashedPassword           String
   createdAt                DateTime @default(now())
   updatedAt                DateTime @updatedAt

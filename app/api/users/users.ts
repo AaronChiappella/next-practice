@@ -19,6 +19,12 @@ export async function getUsers(query: string, currentPage: number) {
         id: true,
         email: true,
         name: true,
+        surname:true,
+        phoneNumber: true,
+        address: true,
+        profilePictureThumbnailUrl: true,
+        role: true,
+        createdAt: true,
         
       },
       skip: offset,

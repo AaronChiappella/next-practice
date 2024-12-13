@@ -1,63 +1,26 @@
+import { getUsers, getUsersPages } from "@/app/api/users/users";
 import { columns } from "../ui/columns";
 import { DataTable } from "../ui/data-table";
 import {User} from "@/app/lib/definitions";
 
-async function getData(): Promise<User[]> {
-  // Fetch data from your API here.
-  return [
-    {
-      id: 1,
-      name: "Delba",
-      surname: "De Oliveira",
-      email: "delba@oliveira.com",
-      profilePictureTumbnailUrl:
-        "https://media.istockphoto.com/id/1300845620/es/vector/icono-de-usuario-plano-aislado-sobre-fondo-blanco-s%C3%ADmbolo-de-usuario-ilustraci%C3%B3n-vectorial.jpg?s=1024x1024&w=is&k=20&c=xcdRV86D21s-vCU0cgoXbFZLECdgXrlRMJN8LzgZCi0=",
-      role: "ADMIN",
-    },
-    {
-      id: 2,
-      name: "Jared",
-      surname: "Palmer",
-      email: "jared@palmer.com",
-      profilePictureTumbnailUrl:
-        "https://media.istockphoto.com/id/1300845620/es/vector/icono-de-usuario-plano-aislado-sobre-fondo-blanco-s%C3%ADmbolo-de-usuario-ilustraci%C3%B3n-vectorial.jpg?s=1024x1024&w=is&k=20&c=xcdRV86D21s-vCU0cgoXbFZLECdgXrlRMJN8LzgZCi0=",
-      role: "ADMIN",
-    },
-    {
-      id: 3,
-      name: "Lee",
 
-      surname: "Robinson",
-      email: "lee@robinson.com",
-      profilePictureTumbnailUrl:
-        "https://media.istockphoto.com/id/1300845620/es/vector/icono-de-usuario-plano-aislado-sobre-fondo-blanco-s%C3%ADmbolo-de-usuario-ilustraci%C3%B3n-vectorial.jpg?s=1024x1024&w=is&k=20&c=xcdRV86D21s-vCU0cgoXbFZLECdgXrlRMJN8LzgZCi0=",
-      role: "ADMIN",
-    },
-    {
-      id: 4,
-      name: "Tom",
+export default async function ListUsers(props: {
+  searchParams?: Promise<{
+    query?: string;
+    page?: string;
+  }>;
+} ) {
 
-      surname: "Occhino",
-      email: "tom@occhino.com",
-      profilePictureTumbnailUrl:
-        "https://media.istockphoto.com/id/1300845620/es/vector/icono-de-usuario-plano-aislado-sobre-fondo-blanco-s%C3%ADmbolo-de-usuario-ilustraci%C3%B3n-vectorial.jpg?s=1024x1024&w=is&k=20&c=xcdRV86D21s-vCU0cgoXbFZLECdgXrlRMJN8LzgZCi0=",
-      role: "ADMIN",
-    },
-    {
-      id: 5,
-      name: "Emil",
+  const searchParams = await props.searchParams;
+  const query = searchParams?.query || '';
+  const currentPage = Number(searchParams?.page) || 1;
+  const totalPages = await getUsersPages(query);
 
-      surname: "Kowalski",
-      email: "emil@kowalski.com",
-      profilePictureTumbnailUrl:"https://media.istockphoto.com/id/1300845620/es/vector/icono-de-usuario-plano-aislado-sobre-fondo-blanco-s%C3%ADmbolo-de-usuario-ilustraci%C3%B3n-vectorial.jpg?s=1024x1024&w=is&k=20&c=xcdRV86D21s-vCU0cgoXbFZLECdgXrlRMJN8LzgZCi0=",
-      role: "ADMIN",
-    },
-    // ...
-  ];
-}
+  const data = await getUsers(query, currentPage); 
 
-export default async function ListUsers() {
-  const data = await getData();
+  console.log(data);
+  
+
 
   return (
     <div className="container mx-auto py-10">
