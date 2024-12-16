@@ -4,8 +4,10 @@ export type User = {
   surname: string;
   phoneNumber?: string | null;
   address?: string | null;
-  profilePictureThumbnailUrl: string;
+  profilePictureUrl: string | "";
+  profilePictureThumbnailUrl: string |"";
   email: string;
   createdAt: Date;
+  deletedAt?: Date | null;
   role: string;
 };

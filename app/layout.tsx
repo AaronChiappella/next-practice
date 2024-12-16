@@ -11,6 +11,7 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
 import { ModeToggle } from "./ui/ModeToggle/ModeToggle";
 import { EdgeStoreProvider } from "@/lib/edgestore";
+import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -42,8 +43,11 @@ export default function RootLayout({
                 <ModeToggle />
               </div>
               <EdgeStoreProvider>{children}</EdgeStoreProvider>
+              <Toaster />
+
             </div>
           </SidebarProvider>
+          
         </ThemeProvider>
       </body>
     </html>

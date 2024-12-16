@@ -17,6 +17,8 @@ export default async function ListUsers(props: {
   const totalPages = await getUsersPages(query);
 
   const data = await getUsers(query, currentPage); 
+  
+
 
   console.log(data);
   
@@ -28,7 +30,7 @@ export default async function ListUsers(props: {
         List users
       </p>
 
-      <div className="w-3/4 mx-auto">
+      <div className=" p-4 mx-auto">
         <DataTable columns={columns} data={data} />
       </div>
     </div>

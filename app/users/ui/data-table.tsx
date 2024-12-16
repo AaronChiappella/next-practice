@@ -1,5 +1,7 @@
 "use client";
 
+import { Plus, UserRoundPen } from "lucide-react";
+
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -22,6 +24,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import React from "react";
+import Link from "next/link";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -35,6 +38,7 @@ export function DataTable<TData, TValue>({
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
+  const [rowSelection, setRowSelection] = React.useState({});
 
   const table = useReactTable({
     data,
@@ -43,14 +47,42 @@ export function DataTable<TData, TValue>({
     getPaginationRowModel: getPaginationRowModel(),
     onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
+    onRowSelectionChange: setRowSelection,
+    enableMultiRowSelection: false,
+
     state: {
       columnFilters,
+      rowSelection,
     },
   });
 
   return (
     <>
-      <div className="flex items-center justify-end py-4">
+      <div className="flex items-center justify-between  w-full justify-end py-4">
+        <div className="flex gap-2">
+          <Link href={"/users/create"}>
+            <Button variant="secondary" className="flex items-center">
+              <span className="hidden md:block"> Create User </span>
+              <Plus></Plus>
+            </Button>
+          </Link>
+
+          {table.getFilteredSelectedRowModel().rows.length === 1 && (
+            <Link href={`/users/${1}/edit`}>
+              <Button variant="secondary" className="flex items-center">
+                <UserRoundPen></UserRoundPen>
+                <span className="hidden md:block"> Edit User </span>
+              </Button>
+            </Link>
+          )}
+        </div>
+
+
+        <div className="flex-1 text-sm text-muted-foreground">
+          {table.getFilteredSelectedRowModel().rows.length} of{" "}
+          {table.getFilteredRowModel().rows.length} row(s) selected.
+        </div>
+
         <Input
           placeholder="Search..."
           value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
@@ -60,6 +92,7 @@ export function DataTable<TData, TValue>({
           className="max-w-sm"
         />
       </div>
+
       <div className="rounded-md border">
         <Table>
           <TableHeader>

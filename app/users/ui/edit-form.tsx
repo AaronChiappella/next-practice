@@ -30,12 +30,11 @@ import { createUser, State } from "@/app/api/users/actions";
 import { SingleImageDropzone } from "./single-image-dropzone";
 import { useEdgeStore } from "@/lib/edgestore";
 import { revalidatePath } from "next/cache";
+import { User } from "@/app/lib/definitions";
 
 const roles = z.enum(["ADMIN", "USER", "MANAGER", "WORKER"], {
-  required_error: "You must select a role.",
-});
-
-const initialState: State = { message: null, errors: {} };
+    required_error: "You must select a role.",
+  });
 
 const formSchema = z
   .object({
@@ -67,13 +66,12 @@ const formSchema = z
     path: ["confirmPassword"],
   });
 
-export function CreateUserForm() {
+export default function EditCustomerForm({ customer }: { customer: User }) {
   const [file, setFile] = useState<File>();
   const { edgestore } = useEdgeStore();
   const [progress, setProgress] = useState(0);
   const { toast } = useToast();
 
-  // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -87,51 +85,14 @@ export function CreateUserForm() {
     },
   });
 
-  // 2. Define a submit handler.
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    try {
-      // Create a FormData instance
-      const formData = new FormData();
-      formData.append("name", values.name);
-      formData.append("surname", values.surname);
-      formData.append("address", values.address);
-      formData.append("email", values.email);
-      formData.append("phoneNumber", values.phoneNumber);
-      formData.append("role", values.role);
-      formData.append("password", values.password);
-      formData.append("confirmPassword", values.confirmPassword);
+    
+    console.log("On submit");
+    
 
-      // Handle file upload if a file is selected
-      if (file) {
-        const res = await edgestore.publicImages.upload({
-          file,
-          onProgressChange: (progress) => setProgress(progress),
-        });
 
-        // Append the uploaded image URLs directly to FormData if successful
-        if (res.url) {
-          formData.append("profilePictureUrl", res.url);
-        }
-        if (res.thumbnailUrl) {
-          formData.append("profilePictureThumbnailUrl", res.thumbnailUrl);
-        }
-      }
-      // Call the user creation action
-      const result = await createUser(initialState, formData);
+  }
 
-      toast({
-        title: "User created successfully!",
-        description: `User ${formData.get("name")} created successfully!`,
-      });
-
-      if (result.redirectUrl) {
-        revalidatePath(result.revalidatePath);
-        redirect(result.redirectUrl);
-      }
-    } catch (error) {
-      console.error("Error creating user:", error);
-    }
-  };
 
   return (
     <Form {...form}>
@@ -142,6 +103,7 @@ export function CreateUserForm() {
         <div className="grid grid-cols-3 gap-6 items-start">
           <div className="flex flex-col items-center">
             <SingleImageDropzone
+            
               width={200}
               height={200}
               value={file}
@@ -165,7 +127,7 @@ export function CreateUserForm() {
                 <FormItem>
                   <FormLabel>Username</FormLabel>
                   <FormControl>
-                    <Input placeholder="Insert your name" {...field} />
+                    <Input defaultValue={customer.name ?? ""} placeholder="Insert your name" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -179,7 +141,7 @@ export function CreateUserForm() {
                 <FormItem>
                   <FormLabel>Surname</FormLabel>
                   <FormControl>
-                    <Input placeholder="Insert your surname" {...field} />
+                    <Input defaultValue={customer.surname ?? ""} placeholder="Insert your surname" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -193,7 +155,7 @@ export function CreateUserForm() {
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input placeholder="Insert your email" {...field} />
+                    <Input defaultValue={customer.email ?? ""} placeholder="Insert your email" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -207,7 +169,7 @@ export function CreateUserForm() {
                 <FormItem>
                   <FormLabel>Phone Number</FormLabel>
                   <FormControl>
-                    <Input placeholder="Insert your phone number" {...field} />
+                    <Input defaultValue={customer.phoneNumber ?? ""} placeholder="Insert your phone number" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -224,7 +186,7 @@ export function CreateUserForm() {
               <FormItem>
                 <FormLabel>Address</FormLabel>
                 <FormControl>
-                  <Input placeholder="Insert your address" {...field} />
+                  <Input defaultValue={customer.address ?? ""} placeholder="Insert your address" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -239,7 +201,7 @@ export function CreateUserForm() {
                 <FormLabel>Role</FormLabel>
                 <Select
                   onValueChange={field.onChange}
-                  defaultValue={field.value}
+                  defaultValue={customer.role}
                 >
                   <FormControl>
                     <SelectTrigger>
@@ -290,7 +252,7 @@ export function CreateUserForm() {
         </div>
 
         <Button type="submit" className="w-full mt-6">
-          Submit
+          Confirm
         </Button>
       </form>
     </Form>
