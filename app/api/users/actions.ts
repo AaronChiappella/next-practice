@@ -206,8 +206,10 @@ export async function updateUser(id: number, formData: FormData) {
       },
     });
 
-    // Revalidate and redirect
-  
+    return {
+      message: "!User created successfully!",
+      revalidatePath: "/users/list",
+      redirectUrl: "/users/list"}  
   } catch (err) {
     console.error("Database Error:", err);
     throw new Error("Failed to update user");
@@ -220,8 +222,8 @@ export async function deleteUser(id: number) {
       id,
     },
   });
-  revalidatePath("/users");
-  redirect("/users");
+  revalidatePath("/users/list");
+  redirect("/users/list");
 }
 
 export async function softDeleteUser(id: number) {
@@ -233,8 +235,8 @@ export async function softDeleteUser(id: number) {
       deletedAt: new Date(),
     },
   });
-  revalidatePath("/users");
-  redirect("/users");
+  revalidatePath("/users/list");
+  redirect("/users/list");
 }
 
 export async function restoreUser(id: number) {
@@ -246,6 +248,6 @@ export async function restoreUser(id: number) {
       deletedAt: null,
     },
   });
-  revalidatePath("/users");
-  redirect("/users");
+  revalidatePath("/users/list");
+  redirect("/users/list");
 }

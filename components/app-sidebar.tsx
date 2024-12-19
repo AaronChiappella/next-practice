@@ -39,7 +39,6 @@ const items = [
   },
   {
     title: "Usuarios",
-    url: "/users",
     icon: Users,
     options: [
       {
@@ -53,16 +52,7 @@ const items = [
         icon: Plus,
       },
       
-      {
-        title: "Modificar",
-        url: "/users/delete",
-        icon: UserRoundPen,
-      },
-      {
-        title: "ELiminar",
-        url: "/users/delete",
-        icon: UserRoundX,
-      },
+    
      
     ],
   },

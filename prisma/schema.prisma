@@ -1,12 +1,3 @@
-generator client {
-  provider = "prisma-client-js"
-}
-
-datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
-}
-
 model User {
   id                         Int       @id @default(autoincrement())
   email                      String    @unique
@@ -22,9 +13,54 @@ model User {
   softDelete                 Boolean   @default(false)
   surname                    String
   updatedAt                  DateTime  @updatedAt
+  managedSector              Sector?   @relation("ManagerSector", fields: [managedSectorId], references: [id])
+  managedSectorId            Int?
+  worksIn                    Sector[]  @relation("UserWorksIn")
 
   @@index([email])
   @@index([role])
+}
+
+model Sector {
+  id           Int      @id @default(autoincrement())
+  name         String
+  manager      User?     @relation("ManagerSector")
+  users        User[]    @relation("UserWorksIn")
+}
+
+model Order {
+  orderNumber         Int        @id @default(autoincrement())
+  createdDate         DateTime   @default(now())
+  deliveryDate        DateTime   @default(now())
+  realDeliveryDate    DateTime?
+  client              Client     @relation(fields: [clientId], references: [id])
+  clientId            Int
+  truck               Truck      @relation(fields: [truckId], references: [id])
+  truckId             Int
+  totalLength         Decimal    @default(0.0)
+  utilLength          Decimal    @default(0.0)
+  totalHeight         Decimal    @default(0.0)
+  utilHeight          Decimal    @default(0.0)
+  totalWidth          Decimal    @default(0.0)
+  utilWidth           Decimal    @default(0.0)
+  floorThickness      Decimal    @default(0.0)
+  floorType           FloorType  @relation(fields: [floorTypeId], references: [id])
+  floorTypeId         Int
+  sideDoor            String?
+  backDoor            String?
+  stairs              String?
+  stakeHolders        Decimal    @default(0.0)
+  nozzles             Decimal    @default(0.0)
+  malacates           Decimal    @default(0.0)
+  arches              Decimal    @default(0.0)
+  color               String     @default("BLANCO")
+  colorSocket         String     @default("BLANCO")
+  colorBottom         String     @default("BLANCO")
+  voltage             Voltage    @default(V24)
+  observations        Observation[]
+  state               OrderState @default(CREADO)
+
+  @@index([clientId])
 }
 
 enum Role {
@@ -32,4 +68,56 @@ enum Role {
   ADMIN
   MANAGER
   WORKER
+}
+
+enum OrderState {
+  CREADO
+  PREPARANDO
+  PRODUCIENDO
+  RETIRAR
+  FINALIZADA
+}
+
+model Observation {
+  id          Int    @id @default(autoincrement())
+  order       Order  @relation(fields: [orderId], references: [orderNumber])
+  orderId     Int
+  description String
+}
+
+enum Voltage {
+  V12
+  V24
+}
+
+model FloorType {
+  id   Int    @id @default(autoincrement())
+  name String
+}
+
+model Truck {
+  id             Int        @id @default(autoincrement())
+  name           String
+  domain         String
+  color          String
+  description    String
+  year           Int
+  gearbox        Int
+  chassisLength  Decimal    @default(0.0)
+  chassisWidth   Decimal    @default(0.0)
+  wheelCenter    Decimal    @default(0.0)
+  room           Boolean    @default(false)
+  unitType       UnitType   @relation(fields: [unitTypeId], references: [id])
+  unitTypeId     Int
+  orders         Order[]
+}
+
+model Client {
+  id          Int      @id @default(autoincrement())
+  name        String
+  cuit        String
+  direccion   String
+  phoneNumber String?
+  mail        String?
+  orders      Order[]
 }

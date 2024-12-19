@@ -1,29 +1,21 @@
-import {getUserById, getUsers} from "@/app/api/users/users";
-import EditCustomerForm from "@/app/users/ui/edit-form";
-import { notFound } from "next/navigation";
+import { EditUserForm } from "@/app/users/ui/edit-form";
+import { PrismaClient } from "@prisma/client";
 
-export default async function Page(props:{params: Promise<{id: string}>}) {
-    const params = await props.params;
-    const id = parseInt(params.id) ;
-    const [customer] = await Promise.all([
-        getUserById(id)
-    ])
+const prisma = new PrismaClient();
 
-    if(!customer) {
-        notFound();
-    }
+export default async function EditUserPage({ params }: { params: { id: string } }) {
+  const user = await prisma.user.findUnique({
+    where: { id: Number(params.id) },
+  });
 
-    return (
-        <>
-            <main>
-                
-                <EditCustomerForm customer={customer} />
-            </main>
-        </>
+  if (!user) {
+    return <div>User not found</div>;
+  }
 
-
-
-    )
-
-
+  return (
+    <div className="p-8">
+      <h1 className="text-2xl font-bold mb-6">Edit User</h1>
+      <EditUserForm user={user} />
+    </div>
+  );
 }

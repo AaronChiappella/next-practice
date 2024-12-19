@@ -25,10 +25,8 @@ export default async function ListUsers(props: {
 
 
   return (
-    <div className="container mx-auto py-10">
-      <p className="text-xl text-center font-semibold text-gray-800 m-4">
-        List users
-      </p>
+    <div className="container mx-auto ">
+    
 
       <div className=" p-4 mx-auto">
         <DataTable columns={columns} data={data} />

@@ -156,19 +156,19 @@ export const columns: ColumnDef<User>[] = [
             >
               Copy email
             </DropdownMenuItem>
+            {user.deletedAt && (
+              <DropdownMenuItem
+                onClick={async () => await restoreUser(user.id)}
+              >
+                RESTORE Customer
+              </DropdownMenuItem>
+            )}
             <DropdownMenuSeparator />
             <DropdownMenuItem
               onClick={async () => await softDeleteUser(user.id)}
             >
               SOFT Delete Customer
             </DropdownMenuItem>
-              {user.deletedAt && (
-                <DropdownMenuItem
-                  onClick={async () => await restoreUser(user.id)}
-                >
-                  RESTORE Customer
-                </DropdownMenuItem>
-              )}
 
 
             <DropdownMenuItem

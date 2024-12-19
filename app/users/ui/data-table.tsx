@@ -67,21 +67,9 @@ export function DataTable<TData, TValue>({
             </Button>
           </Link>
 
-          {table.getFilteredSelectedRowModel().rows.length === 1 && (
-            <Link href={`/users/${1}/edit`}>
-              <Button variant="secondary" className="flex items-center">
-                <UserRoundPen></UserRoundPen>
-                <span className="hidden md:block"> Edit User </span>
-              </Button>
-            </Link>
-          )}
+         
         </div>
 
-
-        <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel().rows.length} of{" "}
-          {table.getFilteredRowModel().rows.length} row(s) selected.
-        </div>
 
         <Input
           placeholder="Search..."
