@@ -1,7 +1,6 @@
 import { getUsers, getUsersPages } from "@/app/api/users/users";
 import { columns } from "../ui/columns";
 import { DataTable } from "../ui/data-table";
-import {User} from "@/app/lib/definitions";
 
 
 export default async function ListUsers(props: {
@@ -16,12 +15,7 @@ export default async function ListUsers(props: {
   const currentPage = Number(searchParams?.page) || 1;
   const totalPages = await getUsersPages(query);
 
-  const data = await getUsers(query, currentPage); 
-  
-
-
-  console.log(data);
-  
+  const data = await getUsers(query, currentPage);   
 
 
   return (

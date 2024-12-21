@@ -119,15 +119,17 @@ export function CreateUserForm() {
       // Call the user creation action
       const result = await createUser(initialState, formData);
 
+      console.log(result);
+      
+      if (result.redirectUrl) {
+        redirect("/users/list");
+      }
+
       toast({
-        title: "User created successfully!",
-        description: `User ${formData.get("name")} created successfully!`,
+        title: "Usuario creado con exito!",
+        description: `Usuario ${formData.get("name")} creado exitosamente!`,
       });
 
-      if (result.redirectUrl) {
-        revalidatePath(result.revalidatePath);
-        redirect(result.redirectUrl);
-      }
     } catch (error) {
       console.error("Error creating user:", error);
     }
@@ -163,7 +165,7 @@ export function CreateUserForm() {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Username</FormLabel>
+                  <FormLabel>Name</FormLabel>
                   <FormControl>
                     <Input placeholder="Insert your name" {...field} />
                   </FormControl>

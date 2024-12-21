@@ -30,6 +30,26 @@ export async function getUserById(id: number) {
   }
 }
 
+
+export async function getUserSelector(){
+  try {
+    const users = await prisma.user.findMany({
+      select: {
+        id: true,
+        name: true,
+      },
+      orderBy: {
+        name: "asc",
+      }
+    });
+    return users;
+  } catch (err) {
+    console.error("Database Error:", err);
+    throw new Error("Failed to fetch users");
+  }
+}
+
+
 export async function getUsers(query: string, currentPage: number) {
   const offset = (currentPage - 1) * ITEMS_PER_PAGE;
 

@@ -8,6 +8,9 @@ import {
   UserRoundX,
   BookUser,
   UserRoundPen,
+  HandCoins,
+  Truck,
+  List
 } from "lucide-react";
 
 import {
@@ -28,6 +31,8 @@ import {
   CollapsibleTrigger,
   CollapsibleContent
 } from "@/components/ui/collapsible";
+import { icon } from "@fortawesome/fontawesome-svg-core";
+import { title } from "process";
 
 // Menu items
 const items = [
@@ -36,6 +41,29 @@ const items = [
     url: "/",
     icon: Home,
     options: [],
+  },
+  {
+    title: "Ordenes",
+    url: "/orders",
+    icon: File,
+    options: [],
+  },
+  {
+    title: "Clientes",
+    url: "/customers",
+    icon: HandCoins,
+    options: [
+      {
+        title: "Listado",
+        url: "/customers/list",
+        icon: List
+      },
+    {
+      title : "Añadir",
+      url: "/customers/create",
+      icon: Plus
+    }
+    ],
   },
   {
     title: "Usuarios",
@@ -57,20 +85,42 @@ const items = [
     ],
   },
   {
-    title: "Ordenes",
-    url: "#",
-    icon: File,
-    options: [],
+    title: "Camiones",
+    url: "/trucks",
+    icon: Truck,
+    options: [
+      {
+        title: "Listado",
+        url: "/trucks/list",
+        icon: List
+      },
+      {
+        title : "Añadir",
+        url: "/trucks/create",
+        icon: Plus
+      }
+    ],
   },
   {
     title: "Sectores",
-    url: "#",
+    url: "/sectors",
     icon: Factory,
-    options: [],
+    options: [
+      {
+        title: "Listado",
+        url: "/sectors/list",
+        icon: List  
+      },
+      {
+        title: "Añadir",
+        url: "/sectors/create",
+        icon: Plus
+      }
+    ],
   },
   {
     title: "Ajustes",
-    url: "#",
+    url: "/settings",
     icon: Settings,
     options: [],
   },
